@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.version     = Squatch::VERSION
   s.authors     = ["Domino"]
   s.email       = ["domino.steve@gmail.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "http://github.com/sdomino/squatch"
+  s.summary     = "It's going to relate to sass, and I think I know what I want it to do..."
+  s.description = "It's going to relate to sass, and I think I know what I want it to do..."
 
   s.rubyforge_project = "squatch"
 
@@ -21,4 +21,6 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
   # s.add_runtime_dependency "rest-client"
+
+  s.add_development_dependency 'rspec'
 end
