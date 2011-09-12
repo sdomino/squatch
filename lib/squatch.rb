@@ -1,5 +1,4 @@
-
-Dir["#{File.dirname(__FILE__)}/compressit/*"].each {|file| require(file)}
+Dir["#{File.dirname(__FILE__)}/squatch/**/*"].each {|file| require(file)}
 
 require 'optparse'
 
@@ -7,31 +6,43 @@ module Squatch
   class << self
   
     def run(arguments)
-      options = Hash.new
-      
-      optparser = OptionParser.new do|opts|
-        
-        opts.banner = "Usage: squatch [option] [FOLDER] [VERSION]"
+      unless arguments.empty? || !arguments[0].include?('-')
+        optparser = OptionParser.new do|opts|
+          opts.banner = "Usage: squatch -command [FILE/DIR]"
 
-        opts.on('-h', '--help', 'Display this help') do
+          opts.on('-h', '--help', 'Display this help') do
+            puts optparser
+            exit
+          end
+          opts.on('-v', '--version', 'Display current gem version') do
+            puts "Squatch-#{VERSION}"
+          end
+          opts.on('-f', '--file FILE', 'Squatch FILE in place') do |file|
+            prepare(file)
+          end
+          opts.on('-F', '--folder DIR', 'Squatch files from [DIR] in place') do |dir|
+            prepare(dir)
+          end
+        end
+        
+        begin optparser.parse!(arguments)
+        rescue OptionParser::ParseError => error
+          puts "#{error}"
           puts optparser
+          exit
         end
-        opts.on('-v', '--version', 'Display current gem version') do
-          puts "Currently using version: #{VERSION}"
-        end
-        opts.on('-c', '--css FOLDER VERSION', 'Squatch css files from [FOLDER] (in place)') do
-          puts "Squatching css files in '#{arguments[0]}''"
-          options[:folder], options[:version], options[:ext] = arguments[0], arguments[1], '.css'
-          Squatch::Base.squatch(options)
-        end
+      else
+        puts `squatch -h`
       end
-      
-      begin optparser.parse!(arguments)
-      rescue OptionParser::InvalidOption => error
-        puts "Oops! #{error}, try this: "
-        puts optparser
-        exit 1
-      end
+    end
+
+    def prepare(data)
+      options = Hash[:data, data]
+
+      puts "Specify file type (ie css or js):"
+      options[:ext] = gets.strip
+
+      Squatch::Base.squatch(options)
     end
   
   end

@@ -3,38 +3,50 @@ module Squatch
     class << self
 
       require 'fileutils'
-      require 'tempfile'
 
       def squatch(options)
-        @version, @ext, @folder  = options[:version], options[:ext], options[:folder]
+
+        destination_path = Dir.open(File.dirname(options[:data]))
+
+        case File.ftype(options[:data])
+        when 'file'
+          files_to_squatch = Array[options[:data]]
+          backup_dir = "#{File.dirname(options[:data])}/backup"
+        when 'directory'
+          files_to_squatch = Dir.glob("#{options[:data]}/**/*#{options[:ext]}")
+          backup_dir = "#{options[:data]}/backup"
+        else
+          puts "Oops!"
+          exit
+        end
+
+        Dir.exists?(backup_dir) ? true : Dir.mkdir(backup_dir)
         
-        @destination_path, @files_to_squatch = Dir.open("#{@folder}"), Dir.glob("#{@folder}/**/*#{@ext}")
-        
-        # squatch each file in @files_to_compress and save in place
+        # squatch each file in files_to_compress and save in place
         begin
-
-          @files_to_squatch.each do |file|
-            backup = Tempfile.new("#{file}.txt")
-            FileUtils.mv('/tmp', backup)
-
-            puts "Squatching: #{File.basename(file)}..."
-            
-            tmp = Tempfile.new("tmp.txt")
-            File.open("#{file}", 'r') do |file|
-              file.each_line{|line| tmp.puts line.strip}
+          files_to_squatch.each do |path|            
+            File.open("#{path}", 'r+') do |file|
+              puts "----- FILE: #{file}"
+              FileUtils.copy_file(file, "#{backup_dir}/#{File.basename(file, File.extname(file))}.txt")
+              puts "Backup of #{File.basename(file)} created at #{backup_dir} named #{File.basename(file, File.extname(file))}.txt."
+              
+              puts "Squatching: #{File.basename(file)}..."
+              file.each_line do |line|
+                puts "----- #{line}"
+                file.print(line.strip)
+              end
             end
-            FileUtils.mv(tmp, '#{file}.txt')
-            
-            # File.read(file, 'w').each do |line|
-            #   file.puts line.strip
-            # end
-            puts "#{File.basename(file)} has been squatched"
+
+            puts "#{File.basename(path)} has been squatched"
           end
           
           # confirm squatching
-          puts "Complete! All #{@ext} files have been squatched"
-        rescue
-          puts "Hmm... looks like this folder doesn't contain any #{@ext} files."
+          puts "Complete! All #{options[:ext]} files have been squatched"
+        rescue => exception
+          puts "Oops! #{exception.message}"
+          exception.backtrace.each do |trace|
+            puts "#{trace} \n"
+          end
         end
       end
 
