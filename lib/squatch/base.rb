@@ -26,15 +26,32 @@ module Squatch
         begin
           files_to_squatch.each do |path|            
             File.open("#{path}", 'r+') do |file|
-              puts "----- FILE: #{file}"
+              
               FileUtils.copy_file(file, "#{backup_dir}/#{File.basename(file, File.extname(file))}.txt")
               puts "Backup of #{File.basename(file)} created at #{backup_dir} named #{File.basename(file, File.extname(file))}.txt."
               
+              new_lines = ''
+
               puts "Squatching: #{File.basename(file)}..."
               file.each_line do |line|
-                puts "----- #{line}"
-                file.print(line.strip)
+                new_lines.concat(line.strip)
+                line.each_char do |character|
+                  case character
+                  when '{'
+                    new_lines.concat(' ')
+                  when '}'
+                    new_lines.concat("\n")
+                  when ';'
+                    new_lines.concat(' ')
+                  else
+                  end
+                end
               end
+
+              file.rewind
+              file.write(new_lines)
+              file.truncate(file.pos)
+
             end
 
             puts "#{File.basename(path)} has been squatched"
