@@ -35,21 +35,26 @@ module Squatch
               puts "Squatching: #{File.basename(file)}..."
               file.each_line do |line|
                 new_lines.concat(line.strip)
-                line.each_char do |character|
-                  case character
-                  when '{'
-                    new_lines.concat(' ')
-                  when '}'
-                    new_lines.concat("\n")
-                  when ';'
-                    new_lines.concat(' ')
-                  else
-                  end
-                end
               end
 
+              puts "LINES: #{new_lines}"
+
+              new_lines.gsub(';', '; ')
+              new_lines.gsub('{', '{ ')
+              new_lines.gsub('}', "}\n")
+              new_lines.gsub('/*', "\n/*")
+
+              # new_lines.each_char do |char|
+              #   case char
+              #   when ';'
+              #     puts "SEMI: #{char}, #{char.class}"
+              #     char.replace('HELLO')
+              #   else
+              #   end
+              # end
+
               file.rewind
-              file.write(new_lines)
+              file.print(new_lines)
               file.truncate(file.pos)
 
             end
