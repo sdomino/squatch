@@ -20,7 +20,7 @@ module Squatch
           opts.on('-f', '--file FILE', 'Squatch FILE in place') do |file|
             prepare(file)
           end
-          opts.on('-F', '--folder DIR', 'Squatch files from [DIR] in place') do |dir|
+          opts.on('-F', '--folder DIR', 'Squatch files from DIR in place') do |dir|
             prepare(dir)
           end
         end

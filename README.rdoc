@@ -1,0 +1,51 @@
+= Squatch
+
+Squatch will take your sass/css files (or any file really) and 'squatch' them; meaning it will remove all extra linebreaks, and clean up whitespace, essentially making each css declaration a single line rather than multiple lines.
+
+== Features
+
+* Super pretty, super readable stylesheets
+* Support for single or multiple file squatching
+* Creates a backup of original file, incase you want to unsquatch your file
+* Command Line Input (CLI)
+* Rake tasks (coming soon)
+* Thor tasks (coming soon)
+	
+== Install
+
+=== Rails (coming soon)
+
+Add this line to your Gemfile:
+
+ gem 'squatch'
+
+Then do a bundle install:
+	
+ bundle install
+	
+---
+	
+=== Non Rails
+
+ gem install squatch
+	
+== Usage
+
+  Usage: squatch -command [FILE/DIR]
+  
+    -h, --help						Display this help
+    -v, --version					Display current gem version
+    -f, --file FILE 				Squatch FILE in place
+    -F, --files DIR					Squatch files from DIR in place
+
+---
+
+== TODO
+
+* Tests
+* One final pass of cleanup and refactoring
+* Cleanup the look of squatched files
+
+== Copyright
+
+Copyright (c) 2011 Steve Domino. See LICENSE.txt for further details

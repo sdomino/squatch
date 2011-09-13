@@ -39,10 +39,11 @@ module Squatch
 
               puts "LINES: #{new_lines}"
 
-              new_lines.gsub(';', '; ')
-              new_lines.gsub('{', '{ ')
-              new_lines.gsub('}', "}\n")
-              new_lines.gsub('/*', "\n/*")
+              new_lines.gsub!(';', '; ')
+              new_lines.gsub!('{', '{ ')
+              new_lines.gsub!('}', "}\n")
+              new_lines.gsub!('/*', "\n/*")
+              new_lines.gsub!('*/', "*/\n")
 
               # new_lines.each_char do |char|
               #   case char
