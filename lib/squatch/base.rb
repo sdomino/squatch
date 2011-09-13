@@ -37,8 +37,6 @@ module Squatch
                 new_lines.concat(line.strip)
               end
 
-              puts "LINES: #{new_lines}"
-
               new_lines.gsub!(';', '; ')
               new_lines.gsub!('{', '{ ')
               new_lines.gsub!('}', "}\n")
