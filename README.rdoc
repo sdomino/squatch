@@ -33,10 +33,10 @@ Then do a bundle install:
 
   Usage: squatch -command [FILE/DIR]
   
-    -h, --help						Display this help
-    -v, --version					Display current gem version
-    -f, --file FILE 				Squatch FILE in place
-    -F, --files DIR					Squatch files from DIR in place
+	-h, --help						Display this help
+	-v, --version					Display current gem version
+	-f, --file FILE 				Squatch FILE in place
+	-F, --files DIR					Squatch files from DIR in place
 
 ---
 
